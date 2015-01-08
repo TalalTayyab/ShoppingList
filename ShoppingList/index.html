@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html ng-app="shoppingListApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Shopping List</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <script src="Scripts/jquery/jquery-1.10.2.js"></script>
+    <script src="Scripts/bootstrap/bootstrap.js"></script>
+    <script src="Scripts/angular/angular.js"></script>
+    <script src="Scripts/App/app.js"></script>
+
+    <script src="Scripts/App/services/shoppingDataHandler.js"></script>
+    <script src="Scripts/App/services/errorHandler.js"></script>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Shopping List</span>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a style="cursor:pointer" data-toggle="modal" data-target="#myModal">Add new item</a>
+                    </li>
+                 
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container body-content">
+
+
+        <div ng-controller="mainCtrl">
+
+
+            <br/>
+            <div class="form-inline">
+                <div class="form-group">
+                    
+                    <input type="text" class="form-control"  placeholder="Filter items" ng-model="filterText">
+                </div>
+              
+                <div class="checkbox pull-right">
+                    <label>
+                        <input type="checkbox" ng-model="showCompleted"> Show Completed
+                    </label>
+                </div>
+            </div>
+
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Completed</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="item in items | filter: {name:filterText} | completedItems:showCompleted">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td><input type="checkbox" ng-model="item.completed" ng-click="saveItem(item)" /></td>
+                        <td>
+                            <span class="pull-right">
+                                <button class="btn btn-primary" ng-click="displayDialog(item)">Edit</button>
+                                <button class="btn btn-danger" ng-click="removeItem(item)">Delete</button>
+                            </span>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" show-dialog>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{getDialogTitle()}}</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form name="shoppingItemForm">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="Enter name" ng-model="editableItem.name" required />
+                                   
+                                    
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name">Quantity</label>
+                                    <input type="number" class="form-control" name="quantity" placeholder="Enter quantity" ng-model="editableItem.quantity" required>
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="completed" ng-model="editableItem.completed"> Completed
+                                    </label>
+                                </div>
+
+
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-disabled="shoppingItemForm.$invalid" ng-click="saveItem(editableItem)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+</body>
+</html>
