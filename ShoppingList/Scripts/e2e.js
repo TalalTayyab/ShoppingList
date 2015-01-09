@@ -1,0 +1,10 @@
+﻿describe('angularjs homepage', function () {
+    it('should have a title', function () {
+        browser.get('http://localhost:56787/');
+
+        expect(browser.getTitle()).toEqual('Shopping List');
+       
+    
+        
+    });
+});
